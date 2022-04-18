@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure('2') do |config|
+    config.vm.box = "ubuntu/jammy64"
+    config.vm.host_name = 'microk8s.mmagnani.lab'
+    config.vm.network "public_network", bridge: "enp0s20f0u2u1u2"
+
+    config.vm.provider 'virtualbox' do |vb|
+      vb.cpus = 2
+      vb.memory = 8192
+      vb.name = 'microk8s'
+    end
+    config.vm.provider 'libvirt' do |vb|
+      vb.cpus = 2
+      vb.memory = 8192
+    end
+      config.vm.provision :ansible do |ansible|
+          ansible.playbook = "ansible/playbook.yml"
+      end
+  end
